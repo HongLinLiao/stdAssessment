@@ -8,7 +8,9 @@ from sysException import sysException
 class customException(Exception):
     pass
 
+# Data path
 path = './備審資料/106生醫'
+# Test path
 # path = './test'
 
 try:

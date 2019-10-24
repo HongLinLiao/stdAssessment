@@ -1,8 +1,10 @@
 # basic model
 class BasicModel():
-    def __init__(self, id, name, isOk = True, message = ''):
+    def __init__(self, id, school, name, isOk = True, message = ''):
         # 流水序號
         self.id = id
+        # 學校名稱
+        self.school = school
         # 學生姓名
         self.name = name
         # 是否成功

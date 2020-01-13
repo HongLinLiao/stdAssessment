@@ -29,5 +29,6 @@ class XLSX():
     def writeDataByLocation(self, sheet, location, data):
         sheet[location] = data
     
+    # save xlsx
     def saveWorkbook(self):
         self.workbook.save(self.filename)

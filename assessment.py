@@ -1,9 +1,8 @@
 # pip install pdfplumber
 import pdfplumber
 import math
-from enum import Enum
-import re
 import numpy as np
+import re
 
 from dataModel import ReturnModel as returnModel
 from dataModel import BasicModel as basicModel
@@ -14,6 +13,8 @@ from sysException import sysException
 
 # get pdf layout setting
 def getLayoutSetting():
+
+    # txt readline
     fileLine = open('layout.txt','r').readlines()
 
     layoutSettings = []
@@ -31,6 +32,7 @@ def getLayoutSetting():
     line = ''
 
     for line in fileLine:
+        # escape =========
         if(line.strip() != '' and line.find('=')==-1):
 
             if(group == 1):
@@ -174,7 +176,8 @@ def handleSchoolName(allText, schoolSetting):
                         schoolNameEndIndex = index + len(keyWord)
                     break
     
-    returnSetting = ['高中','附中','高商','壢中']
+    # setting contain keyword ex:花蓮女中
+    returnSetting = ['高中','附中','高商','壢中','女中','中學','學校']
     returnState = False
     for item in returnSetting:
         if(schoolSetting.find(item)!= -1):
@@ -204,6 +207,7 @@ def handleStudentName(layout, page, allText):
         name = ''
         nameLabel = 0
 
+        # Bad!!!
         if(allText.find("姓名：") != -1):
             nameLabel = allText.find("姓名：")
         elif(allText.find("學生：") != -1):

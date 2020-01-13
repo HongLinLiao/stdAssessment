@@ -16,6 +16,7 @@ def root(path, type):
 
     print("Layout Loading Complete!")
 
+    # 1: use layout.txt setting to get score and append excel
     if(type==1):
         # ouput excel
         outputFile = XLSX('./output.xlsx')
@@ -93,6 +94,7 @@ def root(path, type):
         print('Success %s pdf.' % (successCount))
         print('Handle %s pdf.' % (pdfCount))
     
+    # 2: print pdf score page data
     elif(type==2):
         for root, dirs, files in walk(path):
             for f in files:
@@ -103,6 +105,7 @@ def root(path, type):
                 if(fullpath.find('.pdf') != -1):
                     findPdfLayout(fullpath)
     
+    # 3: test pdf setting with layout.txt
     elif(type==3):
         for root, dirs, files in walk(path):
             for f in files:

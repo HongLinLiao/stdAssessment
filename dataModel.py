@@ -14,7 +14,7 @@ class BasicModel():
         self.id = id
         # year
         self.year = year
-        #department
+        # department
         self.department = department
         # school name
         self.school = school
@@ -27,7 +27,22 @@ class BasicModel():
 # score model
 class ScoreModel():
 
-    # 高一
+    # first: 高一
+    # second: 高二
+    # third: 高三
+    # whole: 總學年
+
+    # Up: 上學期
+    # Down: 下學期
+
+    # Class: 班級
+    # Category: 類組
+    # All: 年級
+
+    # Rank: 排名
+    # Count: 人數
+    # Percentage: 排名百分比
+
     firstUpClassRank = ''
     firstUpClassCount = ''
     firstUpClassPercentage = ''
@@ -47,7 +62,6 @@ class ScoreModel():
     firstDownAllCount = ''
     firstDownAllPercentage = ''
 
-    # 高二
     secondUpClassRank = ''
     secondUpClassCount = ''
     secondUpClassPercentage = ''
@@ -67,7 +81,6 @@ class ScoreModel():
     secondDownAllCount = ''
     secondDownAllPercentage = ''
 
-    # 高三
     thirdUpClassRank = ''
     thirdUpClassCount = ''
     thirdUpClassPercentage = ''
@@ -77,6 +90,16 @@ class ScoreModel():
     thirdUpAllRank = ''
     thirdUpAllCount = ''
     thirdUpAllPercentage = ''
+
+    wholeClassRank = ''
+    wholeClassCount = ''
+    wholeClassPercentage = ''
+    wholeCategoryRank = ''
+    wholeCategoryCount = ''
+    wholeCategoryPercentage = ''
+    wholeAllRank = ''
+    wholeAllCount = ''
+    wholeAllPercentage = ''
 
     def __init__(self):
         pass

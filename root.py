@@ -1,75 +1,114 @@
 from os import walk
 from os.path import join
-from openpyxl import load_workbook
 
-from assessment import parse
+# XLSX Model
+from xlsxHandler import XLSX
 
-def root(path):
-    # result excel
-    excel = load_workbook('./result.xlsx')
-    # first sheet
-    worksheet = excel.get_sheet_by_name(excel.sheetnames[0])
+from assessment import convertInfo,findPdfLayout, testPdfLayout, getLayoutSetting, attributes, getVariableName
 
-    max_row = worksheet.max_row + 1
+# all file
+def root(path, type):
 
-    # 標頭
-    worksheet['A1'] = 'Id'
-    worksheet['B1'] = 'School'
-    worksheet['C1'] = 'Name'
-    worksheet['D1'] = 'IsOk'
-    worksheet['E1'] = 'Message'
-    worksheet['F1'] = '高一上學期班級排名百分比'
-    worksheet['G1'] = '高一上學期類組排名百分比'
-    worksheet['H1'] = '高一上學期年級排名百分比'
-    worksheet['I1'] = '高一下學期班級排名百分比'
-    worksheet['J1'] = '高一下學期類組排名百分比'
-    worksheet['K1'] = '高一下學期年級排名百分比'
-    worksheet['L1'] = '高二上學期班級排名百分比'
-    worksheet['M1'] = '高二上學期類組排名百分比'
-    worksheet['N1'] = '高二上學期年級排名百分比'
-    worksheet['O1'] = '高二下學期班級排名百分比'
-    worksheet['P1'] = '高二下學期類組排名百分比'
-    worksheet['Q1'] = '高二下學期年級排名百分比'
-    worksheet['R1'] = '高三上學期班級排名百分比'
-    worksheet['S1'] = '高三上學期類組排名百分比'
-    worksheet['T1'] = '高三上學期年級排名百分比'
+    print("Layout Loading......")
 
-    # pdf 數量
-    count = 0;
+    # get Layout Setting
+    layoutSettings = getLayoutSetting()
 
-    # 所有檔案的絕對路徑
-    for root, dirs, files in walk(path):
-        for f in files:
-            fullpath = join(root, f)
-            # 篩掉不是pdf的file
-            if(fullpath.find('.pdf') != -1):
-                # call parse
-                result = parse(fullpath)
-                worksheet['A'+str(max_row+count)] = result[0].id
-                worksheet['B'+str(max_row+count)] = result[0].school
-                worksheet['C'+str(max_row+count)] = result[0].name
-                if(result[0].isOk == False):
-                    worksheet['D'+str(max_row+count)] = 'x'
-                    worksheet['E'+str(max_row+count)] = result[0].message
-                else:
-                    worksheet['F'+str(max_row+count)] = result[1].firstＵpClassPercentage
-                    worksheet['G'+str(max_row+count)] = result[1].firstUpCategoryPercentage
-                    worksheet['H'+str(max_row+count)] = result[1].firstUpAllPercentage
-                    worksheet['I'+str(max_row+count)] = result[1].firstDownClassPercentage
-                    worksheet['J'+str(max_row+count)] = result[1].firstDownCategoryPercentage
-                    worksheet['K'+str(max_row+count)] = result[1].firstDownAllPercentage
-                    worksheet['L'+str(max_row+count)] = result[1].secondＵpClassPercentage
-                    worksheet['M'+str(max_row+count)] = result[1].secondUpCategoryPercentage
-                    worksheet['N'+str(max_row+count)] = result[1].secondUpAllPercentage
-                    worksheet['O'+str(max_row+count)] = result[1].secondDownClassPercentage
-                    worksheet['P'+str(max_row+count)] = result[1].secondDownCategoryPercentage
-                    worksheet['Q'+str(max_row+count)] = result[1].secondDownAllPercentage
-                    worksheet['R'+str(max_row+count)] = result[1].thirdＵpClassPercentage
-                    worksheet['S'+str(max_row+count)] = result[1].thirdUpCategoryPercentage
-                    worksheet['T'+str(max_row+count)] = result[1].thirdUpAllPercentage
+    print("Layout Loading Complete!")
 
-                print("%s,%s,%s,%s,%s" % (result[0].id,result[0].school,result[0].name,result[0].isOk,result[0].message))
+    if(type==1):
+        # ouput excel
+        outputFile = XLSX('./output.xlsx')
 
-                count = count + 1
-    excel.save('result.xlsx')
-    print('End!')
+        sheet =outputFile.getSheetByName(outputFile.workbook.sheetnames[0])
+
+        # file write with append mode
+        max_row = outputFile.getSheetMaxRow(sheet) + 1
+
+        # column name
+        outputFile.writeDataByLocation(sheet, 'A1', 'Year')
+        outputFile.writeDataByLocation(sheet, 'B1', 'Department')
+        outputFile.writeDataByLocation(sheet, 'C1', 'Id')
+        outputFile.writeDataByLocation(sheet, 'D1', 'School')
+        outputFile.writeDataByLocation(sheet, 'E1', 'Name')
+        outputFile.writeDataByLocation(sheet, 'F1', 'IsOk')
+        outputFile.writeDataByLocation(sheet, 'G1', 'Message')
+
+        cell = [
+            'H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
+            'AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ',
+            'AR','AS','AT','AU','AV','AW','AX',
+            'AY','AZ','BA','BB','BC','BD','BE','BF','BG','BH','BI'
+        ]
+
+        for i in range(len(attributes)):
+            outputFile.writeDataByLocation(sheet, cell[i]+'1', attributes[i].replace(',',''))
+
+        # pdf count
+        pdfCount = 0;
+        successCount = 0;
+
+        for root, dirs, files in walk(path):
+            for f in files:
+
+                # pdf absolute path
+                fullpath = join(root, f)
+
+                # filter not .pdf
+                if(fullpath.find('.pdf') != -1):
+
+                    # call parse
+                    result = convertInfo(fullpath, layoutSettings)
+
+                    outputFile.writeDataByLocation(sheet, 'A'+str(max_row+pdfCount), result.data.year)
+                    outputFile.writeDataByLocation(sheet, 'B'+str(max_row+pdfCount), result.data.department)
+                    outputFile.writeDataByLocation(sheet, 'C'+str(max_row+pdfCount), result.data.id)
+                    outputFile.writeDataByLocation(sheet, 'D'+str(max_row+pdfCount), result.data.school)
+                    outputFile.writeDataByLocation(sheet, 'E'+str(max_row+pdfCount), result.data.name)
+
+                    if(result.isOk == False):
+                        outputFile.writeDataByLocation(sheet, 'F'+str(max_row+pdfCount), 'x')
+                        outputFile.writeDataByLocation(sheet, 'G'+str(max_row+pdfCount), result.message)
+                    else:
+
+                        # score data
+                        for i in range(len(attributes)):
+
+                            variableName = getVariableName(attributes[i].split(',')[0], attributes[i].split(',')[1])
+                            if(result.data.data != None):
+                                score = getattr(result.data.data, variableName)
+                                outputFile.writeDataByLocation(sheet, cell[i]+str(max_row+pdfCount), score)
+                        
+                        successCount = successCount + 1
+
+                    print("%s,%s,%s,%s,%s,%s,%s" % (result.data.year,result.data.department,result.data.id,result.data.school,result.data.name,result.isOk,result.message))
+
+                    pdfCount = pdfCount + 1
+                    
+        # save file
+        outputFile.saveWorkbook()
+
+        print('End!')
+        
+        print('Success %s pdf.' % (successCount))
+        print('Handle %s pdf.' % (pdfCount))
+    
+    elif(type==2):
+        for root, dirs, files in walk(path):
+            for f in files:
+                # pdf absolute path
+                fullpath = join(root, f)
+
+                # filter not .pdf
+                if(fullpath.find('.pdf') != -1):
+                    findPdfLayout(fullpath)
+    
+    elif(type==3):
+        for root, dirs, files in walk(path):
+            for f in files:
+                # pdf absolute path
+                fullpath = join(root, f)
+
+                # filter not .pdf
+                if(fullpath.find('.pdf') != -1):
+                    testPdfLayout(fullpath, layoutSettings)

@@ -1,46 +1,83 @@
+# state model
+class ReturnModel():
+    def __init__(self, isOk = True, message = '', data = None):
+
+        self.isOk = isOk
+        self.message = message
+        self.data = data
+
 # basic model
 class BasicModel():
-    def __init__(self, id, school, name, isOk = True, message = ''):
-        # 流水序號
+    def __init__(self, id, year, department, school, name, data = None):
+
+        # pdf file id
         self.id = id
-        # 學校名稱
+        # year
+        self.year = year
+        #department
+        self.department = department
+        # school name
         self.school = school
-        # 學生姓名
+        # student name
         self.name = name
-        # 是否成功
-        self.isOk = isOk
-        # 訊息
-        self.message = message
+        # score data
+        self.data = data
 
         
 # score model
 class ScoreModel():
-    def __init__(self, score):
 
-        # 依序為班級排名百分比、類組排名百分比、年級排名百分比
+    # 高一
+    firstUpClassRank = ''
+    firstUpClassCount = ''
+    firstUpClassPercentage = ''
+    firstUpCategoryRank = ''
+    firstUpCategoryCount = ''
+    firstUpCategoryPercentage = ''
+    firstUpAllRank = ''
+    firstUpAllCount = ''
+    firstUpAllPercentage = ''
+    firstDownClassRank = ''
+    firstDownClassCount = ''
+    firstDownClassPercentage = ''
+    firstDownCategoryRank = ''
+    firstDownCategoryCount = ''
+    firstDownCategoryPercentage = ''
+    firstDownAllRank = ''
+    firstDownAllCount = ''
+    firstDownAllPercentage = ''
 
-        # 高一上學期 
-        self.firstＵpClassPercentage = score[0]
-        self.firstUpCategoryPercentage = score[1]
-        self.firstUpAllPercentage = score[2]
+    # 高二
+    secondUpClassRank = ''
+    secondUpClassCount = ''
+    secondUpClassPercentage = ''
+    secondUpCategoryRank = ''
+    secondUpCategoryCount = ''
+    secondUpCategoryPercentage = ''
+    secondUpAllRank = ''
+    secondUpAllCount = ''
+    secondUpAllPercentage = ''
+    secondDownClassRank = ''
+    secondDownClassCount = ''
+    secondDownClassPercentage = ''
+    secondDownCategoryRank = ''
+    secondDownCategoryCount = ''
+    secondDownCategoryPercentage = ''
+    secondDownAllRank = ''
+    secondDownAllCount = ''
+    secondDownAllPercentage = ''
 
-        # 高一下學期
-        self.firstDownClassPercentage = score[3]
-        self.firstDownCategoryPercentage = score[4]
-        self.firstDownAllPercentage = score[5]
+    # 高三
+    thirdUpClassRank = ''
+    thirdUpClassCount = ''
+    thirdUpClassPercentage = ''
+    thirdUpCategoryRank = ''
+    thirdUpCategoryCount = ''
+    thirdUpCategoryPercentage = ''
+    thirdUpAllRank = ''
+    thirdUpAllCount = ''
+    thirdUpAllPercentage = ''
 
-        # 高二上學期
-        self.secondＵpClassPercentage = score[6]
-        self.secondUpCategoryPercentage = score[7]
-        self.secondUpAllPercentage = score[8]
-
-        # 高二下學期
-        self.secondDownClassPercentage = score[9]
-        self.secondDownCategoryPercentage = score[10]
-        self.secondDownAllPercentage = score[11]
-
-        # 高三上學期
-        self.thirdＵpClassPercentage = score[12]
-        self.thirdUpCategoryPercentage = score[13]
-        self.thirdUpAllPercentage = score[14]
+    def __init__(self):
+        pass
 

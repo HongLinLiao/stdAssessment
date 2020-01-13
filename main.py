@@ -5,9 +5,9 @@ from root import root
 from sysException import sysException
 
 # Data path
-# path = '備審資料'
+path = '備審資料'
 # Test path
-path = '備審資料/106生醫/10117018'
+# path = '備審資料/106生醫/10117018'
 
 try:
     
@@ -17,9 +17,9 @@ try:
         # 3: test pdf setting with layout.txt
 
         print("--------------------------------------------------------------")
-        # root(path,1)
+        root(path,1)
         print("--------------------------------------------------------------")
-        root(path,2)
+        # root(path,2)
         print("--------------------------------------------------------------")
         # root(path,3)
         print("--------------------------------------------------------------")
